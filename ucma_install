@@ -4,6 +4,9 @@ $Local_domain="{0}.{1}" -f $env:computername, $env:userdnsdomain
 #定义本地计算机名称												
 $Computer_name=$env:computername	
 
+#定义sip用户名称
+$Sip_name=read-host "please a sip name [ EXAMPLE:costum ]"
+
 #定义域名后缀																			
 $Domain_suffix=read-host "please a doamin the suffix [ EXAMPLE: example.com ]"	
 
@@ -58,4 +61,4 @@ new-cstrustedapplication -applicationid $Computer_name -trustedapplicationpoolfq
 enable-cstopology	
 
 #创建一个受信用的程序终结点																								
-new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Computer_name@$Domain_suffix -displayname $Computer_name  
+new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Sip_name@$Domain_suffix - 
