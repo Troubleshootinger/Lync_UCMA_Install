@@ -4,8 +4,8 @@ $Local_domain="{0}.{1}" -f $env:computername, $env:userdnsdomain
 #定义本地计算机名称												
 $Computer_name=$env:computername	
 
-#定义sip用户名称
-$Sip_name=read-host "please a sip name [ EXAMPLE:costum ]"
+#定义sip账户名称
+$Bot_name=read-host "please a sip name [ EXAMPLE:bot1 or ... ]"
 
 #定义域名后缀																			
 $Domain_suffix=read-host "please a doamin the suffix [ EXAMPLE: example.com ]"	
@@ -37,9 +37,13 @@ enable-csreplica
 #启动复制服务																																											
 start-service replica	
 
-#显示复制状态信息																							
-Get-CsManagementStoreReplicationStatus		
-
+#显示复制状态信息	
+foreach( $xx in Get-CsManagementStoreReplicationStatus ){
+if ( ($xx).replicafqdn -ne $Local_domain ){
+    write "right:$xx>>break"
+    break
+}
+  }																						
 #此循环的意思简介：查看本地服务器的复制状态，如果为真跳出循环																	
 do { 																												
     $status=Get-CsManagementStoreReplicationStatus -replicafqdn $Local_domain
@@ -49,8 +53,7 @@ do {
 Invoke-CsManagementStoreReplication			
 
 #请求证书后获取证书的指纹																
-$Cscertificate=(request-cscertificate -new -type default -ca $Certificate_authority -verbose).Thumbprint   
-
+$Certificate=(request-cscertificate -new -type default -ca $Certificate_authority -verbose).Thumbprint   
 #将指纹的证书分配给本地计算机的角色    
 set-cscertificate -type default -thumbprint $Certificate		
 
@@ -61,4 +64,4 @@ new-cstrustedapplication -applicationid $Computer_name -trustedapplicationpoolfq
 enable-cstopology	
 
 #创建一个受信用的程序终结点																								
-new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Sip_name@$Domain_suffix - 
+new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Bot_name@$Domain_suffix  
