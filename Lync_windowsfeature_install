@@ -17,3 +17,16 @@ Remove-WindowsFeature -name RSAT-RDS-Tools
 Remove-WindowsFeature -name UpdateServices-RSAT
 
 shutdown -r -t 0
+
+############################################################################################################################
+
+$hh=read-host "Before installing, please confirm whether to insert the local system installation CD [yes or no]"
+if ( $hh -eq 'no'){
+	exit
+}
+else{
+$xx=read-host "please confirm CD location [D or E or F or ......]"
+Add-WindowsFeature RSAT-ADDS, Web-Server, Web-Static-Content, Web-Default-Doc, Web-Http-Errors, Web-Asp-Net, Web-Net-Ext, Web-ISAPI-Ext, Web-ISAPI-Filter, Web-Http-Logging, Web-Log-Libraries, Web-Request-Monitor, Web-Http-Tracing, Web-Basic-Auth, Web-Windows-Auth, Web-Client-Auth, Web-Filtering, Web-Stat-Compression, Web-Dyn-Compression, NET-WCF-HTTP-Activation45, Web-Asp-Net45, Web-Mgmt-Tools, Web-Scripting-Tools, Web-Mgmt-Compat, Desktop-Experience, Telnet-Client, BITS -Source $xx\sources\sxs
+start-sleep 3
+}
+
