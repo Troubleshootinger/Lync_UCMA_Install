@@ -1,3 +1,11 @@
+
+$hh=read-host "Before installing, please confirm whether to insert the local system installation CD [yes or no]"
+if ( $hh -eq 'no'){
+	exit
+}
+else{
+$xx=read-host "please confirm CD location [D or E or F or ......]"
+install-windowsfeature NET-Framework-Core -Source $xx:Sources\sxs
 install-windowsfeature -name windows-identity-foundation
 install-windowsfeature -name msmq
 install-windowsfeature -name msmq-directory
@@ -7,3 +15,4 @@ Remove-WindowsFeature -name NET-HTTP-Activation
 install-windowsfeature AS-HTTP-Activation
 
 shutdown -r -t 0
+}
