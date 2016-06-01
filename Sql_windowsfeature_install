@@ -1,0 +1,9 @@
+install-windowsfeature -name windows-identity-foundation
+install-windowsfeature -name msmq
+install-windowsfeature -name msmq-directory
+install-windowsfeature -name Web-Windows-Auth
+install-windowsfeature -name NET-Framework-Features
+Remove-WindowsFeature -name NET-HTTP-Activation
+install-windowsfeature AS-HTTP-Activation
+
+shutdown -r -t 0
