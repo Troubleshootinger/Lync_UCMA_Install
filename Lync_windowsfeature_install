@@ -1,0 +1,19 @@
+install-windowsfeature -name web-server
+install-windowsfeature -name net-framework-features
+install-windowsfeature -name NET-HTTP-Activation
+install-windowsfeature -name NET-Non-HTTP-Activ
+install-windowsfeature AS-HTTP-Activation
+install-windowsfeature AS-MSMQ-Activation
+install-windowsfeature AS-TCP-Activation
+install-windowsfeature AS-Named-Pipes
+install-windowsfeature BITS
+install-windowsfeature server-media-foundation
+install-windowsfeature -name windows-identity-foundation
+install-windowsfeature -name msmq-directory
+install-windowsfeature RSAT
+Remove-WindowsFeature -name RSAT-Feature-Tools
+Remove-WindowsFeature -name RSAT-Hyper-V-Tools
+Remove-WindowsFeature -name RSAT-RDS-Tools
+Remove-WindowsFeature -name UpdateServices-RSAT
+
+shutdown -r -t 0
