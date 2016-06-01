@@ -1,0 +1,18 @@
+$hh=read-host "Before installing, please confirm whether to insert the local system installation CD [yes or no]"
+if ( $hh -eq 'no'){
+	exit
+}
+else{
+$xx=read-host "please confirm CD location [D or E or F or ......]"
+
+install-windowsfeature server-media-foundation
+install-windowsfeature -name windows-identity-foundation
+install-windowsfeature -name web-server
+install-windowsfeature NET-Framework-Core -Source $xx:Sources\sxs
+install-windowsfeature NET-HTTP-Activation
+install-windowsfeature AS-HTTP-Activation
+install-windowsfeature AS-MSMQ-Activation
+install-windowsfeature AS-TCP-Activation
+install-windowsfeature AS-Named-Pipes
+shutdown -r -t 0
+}
