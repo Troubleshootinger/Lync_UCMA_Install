@@ -65,3 +65,11 @@ enable-cstopology
 
 #创建一个受信用的程序终结点																								
 new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Bot_name@$Domain_suffix  
+
+#######################################################################################################################
+
+$Computer_name=$env:computername
+$Local_domain="{0}.{1}" -f $env:computername, $env:userdnsdomain
+$Bot_name=read-host "please a sip name [ EXAMPLE:bot1 or ... ]"
+$Domain_suffix=read-host "please a doamin the suffix [ EXAMPLE: example.com ]"
+new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Bot_name@$Domain_suffix  
