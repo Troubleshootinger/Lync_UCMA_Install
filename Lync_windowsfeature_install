@@ -1,32 +1,35 @@
+
 $hh=read-host "Before installing, please confirm whether to insert the local system installation CD [yes or no]"
 if ( $hh -eq 'no'){
 	exit
 }
 else{
 $xx=read-host "please confirm CD location [D or E or F or ......]"
-install-windowsfeature NET-Framework-Core -Source $xx:Sources\sxs
-install-windowsfeature -name web-server
-install-windowsfeature -name net-framework-features
-install-windowsfeature -name NET-HTTP-Activation
-install-windowsfeature -name NET-Non-HTTP-Activ
+
+install-windowsfeature NET-Framework-Features -Source ${xx}:\Sources\sxs
+
+install-windowsfeature NET-HTTP-Activation
+Install-WindowsFeature NET-Non-HTTP-Activ
+install-windowsfeature web-server
+install-windowsfeature BITS
+install-windowsfeature server-media-foundation
+install-windowsfeature windows-identity-foundation
+install-windowsfeature msmq-directory
+install-windowsfeature RSAT
+Remove-WindowsFeature  RSAT-Feature-Tools
+Remove-WindowsFeature RSAT-Hyper-V-Tools
+Remove-WindowsFeature RSAT-RDS-Tools
+Remove-WindowsFeature UpdateServices-RSAT
+install-windowsfeature NET-Framework-Core -Source ${xx}:\Sources\sxs
+
 install-windowsfeature AS-HTTP-Activation
 install-windowsfeature AS-MSMQ-Activation
 install-windowsfeature AS-TCP-Activation
 install-windowsfeature AS-Named-Pipes
-install-windowsfeature BITS
-install-windowsfeature server-media-foundation
-install-windowsfeature -name windows-identity-foundation
-install-windowsfeature -name msmq-directory
-install-windowsfeature RSAT
-Remove-WindowsFeature -name RSAT-Feature-Tools
-Remove-WindowsFeature -name RSAT-Hyper-V-Tools
-Remove-WindowsFeature -name RSAT-RDS-Tools
-Remove-WindowsFeature -name UpdateServices-RSAT
 
-shutdown -r -t 0
 }
 
-############################################################################################################################
+#####################################################################################################
 
 $hh=read-host "Before installing, please confirm whether to insert the local system installation CD [yes or no]"
 if ( $hh -eq 'no'){
@@ -34,7 +37,6 @@ if ( $hh -eq 'no'){
 }
 else{
 $xx=read-host "please confirm CD location [D or E or F or ......]"
-Add-WindowsFeature RSAT-ADDS, Web-Server, Web-Static-Content, Web-Default-Doc, Web-Http-Errors, Web-Asp-Net, Web-Net-Ext, Web-ISAPI-Ext, Web-ISAPI-Filter, Web-Http-Logging, Web-Log-Libraries, Web-Request-Monitor, Web-Http-Tracing, Web-Basic-Auth, Web-Windows-Auth, Web-Client-Auth, Web-Filtering, Web-Stat-Compression, Web-Dyn-Compression, NET-WCF-HTTP-Activation45, Web-Asp-Net45, Web-Mgmt-Tools, Web-Scripting-Tools, Web-Mgmt-Compat, Desktop-Experience, Telnet-Client, BITS -Source $xx\sources\sxs
+Add-WindowsFeature RSAT-ADDS, Web-Server, Web-Static-Content, Web-Default-Doc, Web-Http-Errors, Web-Asp-Net, Web-Net-Ext, Web-ISAPI-Ext, Web-ISAPI-Filter, Web-Http-Logging, Web-Log-Libraries, Web-Request-Monitor, Web-Http-Tracing, Web-Basic-Auth, Web-Windows-Auth, Web-Client-Auth, Web-Filtering, Web-Stat-Compression, Web-Dyn-Compression, NET-WCF-HTTP-Activation45, Web-Asp-Net45, Web-Mgmt-Tools, Web-Scripting-Tools, Web-Mgmt-Compat, Desktop-Experience, Telnet-Client, BITS -Source ${xx}:\sources\sxs
 start-sleep 3
 }
-
