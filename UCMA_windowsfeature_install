@@ -8,7 +8,7 @@ $xx=read-host "please confirm CD location [D or E or F or ......]"
 install-windowsfeature server-media-foundation
 install-windowsfeature windows-identity-foundation
 install-windowsfeature web-server
-Install-WindowsFeature Web-Net-Ext
+Install-WindowsFeature Web-Net-Ext -Source ${xx}:\Sources\sxs
 install-windowsfeature NET-Framework-Features -Source ${xx}:\Sources\sxs
 install-windowsfeature NET-Framework-Core -Source ${xx}:\Sources\sxs
 install-windowsfeature AS-HTTP-Activation
