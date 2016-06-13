@@ -1,0 +1,10 @@
+$HostIP=read-host "Please enter IP address"
+clear-host
+"Operating system = "+(Get-wmiobject Win32_OperatingSystem -ComputerName $HostIP).caption
+"System architecture = "+(Get-wmiobject Win32_OperatingSystem -ComputerName $HostIP).osarchitecture
+"Host name = "+(Get-wmiobject Win32_OperatingSystem -ComputerName $HostIP).csname
+"Domain name = "+(Get-WmiObject  Win32_ComputerSystem -ComputerName $HostIP).domain
+"Disk size = "+"{0} GB " -f [math]::truncate((Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType=3" -ComputerName $HostIP | Measure-Object -Property Size -Sum).sum /1GB)
+"Disk FreeSpace = "+"{0} GB " -f [math]::truncate((Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType=3" -ComputerName $HostIP | Measure-Object -Property FreeSpace -Sum).sum /1GB)
+"Memory size = "+"{0} GB "-f [Math]::Round((Get-WmiObject  Win32_ComputerSystem -ComputerName $HostIP).totalphysicalmemory /1GB)
+"Memory FreeSpace = "+"{0} GB" -f [math]::round((Get-WmiObject Win32_OperatingSystem -ComputerName $HostIP).FreePhysicalMemory /1MB)
