@@ -1,72 +1,73 @@
-#定义并且显示本机域名信息
+#Define and display local domain information
 $Local_domain=((ping localhost -a -n 1)[1] ).split()[1]
 
-#定义本地计算机名称												
+#Define the local computer name												
 $Computer_name=$env:computername	
 
-#定义sip账户名称
+#Define the name of the SIP account
 $Bot_name=read-host "please a sip name [ EXAMPLE:bot1 or ... ]"
 
-#定义域名后缀																			
+#Domain name suffix																		
 $Domain_suffix=read-host "please a doamin the suffix [ EXAMPLE: example.com ]"	
 
-#定义前端池的完全合格域名（FQDN）								
+#Define Front End pool（FQDN）								
 $Front_pool_name=read-host "please a lync server doamin name FQDN [ EXAMPLE: pool.example.com ]"	
 
-#给应用程序定义一个端口号			
+#Define application port number			
 $Port=read-host "please a port [1-100000]"				
 
-#给本地服务器UCMA指定一个证书颁发机构																	
+#Specify a certificate authority for the local server UCMA																	
 $Certificate_authority=read-host "please a Certificate authority [ FORMAT: dc.example.com\example-dc-ca ]" 	
 
-#获取当前的站点信息
+#Get the current site information
 get-cssite		
 
-#获取注册商的信息备用																												
+#Get the Registrar's information backup																											
 get-csservice -registrar			
 
-#建立守信用的应用程序池																			
+#Set up a credit application pool																			
 new-cstrustedapplicationpool -identity $Local_domain -registrar $Front_pool_name -site 1	
 
-#发布拓扑					
+#Publish topology					
 enable-cstopology		
 
-#添加到lync server 2013复制路径中																						
+#Add to server lync 2013 replication path																						
 enable-csreplica				
 
-#启动复制服务																																											
+#Start replication service																																											
 start-service replica	
 
-#显示复制状态信息	
+#Display copy status information	
 foreach( $xx in Get-CsManagementStoreReplicationStatus ){
 if ( ($xx).replicafqdn -ne $Local_domain ){
     write "right:$xx>>break"
     break
 }
   }																						
-#此循环的意思简介：查看本地服务器的复制状态，如果为真跳出循环																	
+#see the replication status of the local server, if it is really out of the loop																	
 do { 																												
     $status=Get-CsManagementStoreReplicationStatus -replicafqdn $Local_domain
     }while( $status.uptodate -ne $true )
 	
-#执行复制操作		
+#Execute copy operation		
 Invoke-CsManagementStoreReplication			
 
-#请求证书后获取证书的指纹																
+#After requesting a certificate to obtain a certificate of the fingerprint																
 $Certificate=(request-cscertificate -new -type default -ca $Certificate_authority -verbose).Thumbprint   
-#将指纹的证书分配给本地计算机的角色    
+
+#The role of assigning a fingerprint to the local computer    
 set-cscertificate -type default -thumbprint $Certificate		
 
-#创建一个受信用的应用程序												
+#Create a credit application												
 new-cstrustedapplication -applicationid $Computer_name -trustedapplicationpoolfqdn $Local_domain -port $port 
 
-#发布拓扑   
+#Publish topology
 enable-cstopology	
 
-#创建一个受信用的程序终结点																								
+#Create an end point for a credit																								
 new-cstrustedapplicationendpoint -applicationid urn:application:$Computer_name -trustedapplicationpoolfqdn $Local_domain -sipaddress sip:$Bot_name@$Domain_suffix  
 
-#######################################################################################################################
+#################################################Create SIP account###########################################################
 
 $Computer_name=$env:computername
 $Local_domain="{0}.{1}" -f $env:computername, $env:userdnsdomain
